@@ -1,9 +1,9 @@
 <script lang="ts">
   import "./style/style.css";
 
-  // function changeOutputCurrency() {
-  //   outputValue = exchangesRates.conversion_rates[selectOutputCurrency];
-  // }
+  const intervals = setInterval(() => {
+    outputValue = exchangesRates.conversion_rates[selectOutputCurrency];
+  }, 500);
   
   function calculateFinalResult() {
     outputValue = inputValue * exchangesRates.conversion_rates[selectOutputCurrency]
@@ -36,10 +36,6 @@
   let outputValue: any;
 
   fetchAPI();
-  // document.getElementById("input-currency")?.onchange = () => {
-  //   
-  // }
-  // document.querySelector("#output")?.textContent = "";
 
 </script>
 
