@@ -5,8 +5,11 @@
     outputValue = exchangesRates.conversion_rates[selectOutputCurrency];
   }, 500);
   
-  function calculateFinalResult() {
-    outputValue = inputValue * exchangesRates.conversion_rates[selectOutputCurrency]
+  // function calculateFinalResult() {
+  //   outputValue = inputValue * exchangesRates.conversion_rates[selectOutputCurrency]
+  // }
+  function changeInputCurrancy() {
+    fetchAPI();
   }
 
   function fetchAPI() {
@@ -30,6 +33,10 @@
   const currencyOptions = [
     'USD',
     'EUR',
+    'CHF',
+    'GBP',
+    'CNY',
+    'JPY',
     'RUB'
   ];
   let inputValue: any;
@@ -45,7 +52,7 @@
     <section class="converter-fields">
       <div class="currency-container" id="search">
         <input type="number" class="input" placeholder="1" id="input" bind:value={inputValue} />
-        <select class="currensy-celect-btn" id="input-currency" bind:value={selectInputCurrency}>
+        <select class="currensy-celect-btn" id="input-currency" bind:value={selectInputCurrency} on:change={changeInputCurrancy} >
           {#each currencyOptions as currency}
             <option {currency}>{currency}</option>
           {/each}
