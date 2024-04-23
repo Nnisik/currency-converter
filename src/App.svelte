@@ -1,38 +1,48 @@
 <script lang="ts">
   import "./style/style.css";
 
-  function getApiData() {
-    fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/${inputCurrencySeelectValue}`)
-      .then((response) => response.json())
-      .then((json) => {
-        let calculateResult = parseFloat(documet.querySelector("#input").value) * json["conversion_rates"][resultCurrencySeelectValue];
-        resultField.querySelector("input").textContent(calculateResult);    
-        exchangeRates = json;
-    });
+  function changeOutputCurrency() {
+    return;
+  }
+  
+  function calculateFinalResult() {
+    outputValue = inputValue * exchangesRates.conversion_rates[selectOutputCurrency]
   }
 
-  // TODO: result recalculation function
-  // TODO: 
+  function fetchAPI() {
+    fetch(`https://v6.exchangerate-api.com/v6/${API_KEY}/latest/${selectInputCurrency}`,{method: "GET"})
+      .then(response => response.json())
+      .then(data => {
+        // document.querySelector("#output")?.textContent = data.
+        outputValue = data.conversion_rates[selectOutputCurrency];
+        exchangesRates = data;
+      });
+    return;
+  }
 
   // api key
-  const API_KEY = "";
-  // html elements
-  const resultField = documet.querySelector("#result");
-  // currency selectors
-  let inputCurrencySeelectValue = documet.querySelector("#input-currency").value;
-  let resultCurrencySeelectValue = documet.querySelector("#result-currency").value;
-  // currencies data
-  let exchangeRates;
+  const API_KEY = "be3fe510a77785002265eff3";
+  // current exchange rates
+  let exchangesRates: { conversion_rates: { [x: string]: number; }; };
+  let selectInputCurrency: any;
+  $: selectInputCurrency, changeOutputCurrency();
+  let selectOutputCurrency = 'USD';
+  const currencyOptions = [
+    'USD',
+    'EUR',
+    'RUB'
+  ];
+  let inputValue: any;
+  let outputValue: any;
 
-  // api connection and getting
-  window.onload = getApiData();
+  fetchAPI();
 
-  documet.querySelector("#result-currency").onChange = getApiData();
+  selectOutputCurrency.
+  // document.getElementById("input-currency")?.onchange = () => {
+  //   
+  // }
+  // document.querySelector("#output")?.textContent = "";
 
-  documet.querySelector("#input").onChange = () => {
-    let calculateResult = parseFloat(documet.querySelector("#input").value) * json["conversion_rates"][resultCurrencySeelectValue];
-    resultField.querySelector("input").textContent(calculateResult);   
-  }
 </script>
 
 <main>
@@ -40,19 +50,19 @@
     <h1 class="converter-header">Convert currency</h1>
     <section class="converter-fields">
       <div class="currency-container" id="search">
-        <input type="number" name="" class="input" placeholder="1" id="input" />
-        <select class="currensy-celect-btn" id="input-currency">
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="RUB">RUB</option>
+        <input type="number" class="input" placeholder="1" id="input" on:input={calculateFinalResult} bind:value={inputValue} />
+        <select class="currensy-celect-btn" id="input-currency" bind:value={selectInputCurrency}>
+          {#each currencyOptions as currency}
+            <option {currency}>{currency}</option>
+          {/each}
         </select>
       </div>
       <div class="currency-container" id="result">
-        <p class="input"></p>
-        <select class="currensy-celect-btn" id="result-currency">
-          <option value="USD">USD</option>
-          <option value="EUR">EUR</option>
-          <option value="RUB">RUB</option>
+        <p class="input" id="output">{outputValue}</p>
+        <select class="currensy-celect-btn" id="result-currency" bind:value={selectOutputCurrency} >
+          {#each currencyOptions as currency}
+            <option {currency}>{currency}</option>
+          {/each}
         </select>
       </div>
     </section>
