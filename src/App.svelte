@@ -1,9 +1,9 @@
 <script lang="ts">
   import "./style/style.css";
 
-  function changeOutputCurrency() {
-    return;
-  }
+  // function changeOutputCurrency() {
+  //   outputValue = exchangesRates.conversion_rates[selectOutputCurrency];
+  // }
   
   function calculateFinalResult() {
     outputValue = inputValue * exchangesRates.conversion_rates[selectOutputCurrency]
@@ -24,9 +24,9 @@
   const API_KEY = "be3fe510a77785002265eff3";
   // current exchange rates
   let exchangesRates: { conversion_rates: { [x: string]: number; }; };
-  let selectInputCurrency: any;
-  $: selectInputCurrency, changeOutputCurrency();
+  let selectInputCurrency = 'USD';
   let selectOutputCurrency = 'USD';
+  // $: selectOutputCurrency, changeOutputCurrency();
   const currencyOptions = [
     'USD',
     'EUR',
@@ -36,8 +36,6 @@
   let outputValue: any;
 
   fetchAPI();
-
-  selectOutputCurrency.
   // document.getElementById("input-currency")?.onchange = () => {
   //   
   // }
@@ -50,7 +48,7 @@
     <h1 class="converter-header">Convert currency</h1>
     <section class="converter-fields">
       <div class="currency-container" id="search">
-        <input type="number" class="input" placeholder="1" id="input" on:input={calculateFinalResult} bind:value={inputValue} />
+        <input type="number" class="input" placeholder="1" id="input" bind:value={inputValue} />
         <select class="currensy-celect-btn" id="input-currency" bind:value={selectInputCurrency}>
           {#each currencyOptions as currency}
             <option {currency}>{currency}</option>
